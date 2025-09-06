@@ -1,73 +1,72 @@
 // ultima version con saldo
 object gimenez {
-    var fondoParaSueldos = 300000
+  var property dinero = 300000
 
-    method fondo() {
-        return fondoParaSueldos
-    } //getter fondo
-
-    method pagarSueldo(_empleado) {
-        fondoParaSueldos = fondoParaSueldos - _empleado.sueldo()
+  method pagarA(empleado) {
+    if (dinero < empleado.sueldo()){
+      self.error("Gimenez no tiene dinero suficiente para pagar a " + empleado)
     }
+    dinero -= empleado.sueldo()
+    empleado.cobrarSueldo()
+  }
+
+// VALIDACION
+  method validarPago(empleado){
+    if (self.dineroInsuficiente(empleado) ){
+      self.error("Gimenez no tiene dinero suficiente para pagar a "+ empleado)
+    }
+  }
+  method dineroInsuficiente(empleado) {return dinero < empleado.sueldo()}
+
 }
 
+
+
+
 object galvan {
-    var sueldo = 15000
-    var totalCobrado = 0
-    var dinero = 0
+  var property sueldo = 15000
+  var saldo = 0
 
-    method sueldo(_sueldo) {
-        sueldo = _sueldo
-    }
+  method cobrarSueldo() {
+      saldo += self.sueldo()
+  }
 
-    method sueldo() {
-        totalCobrado = totalCobrado + sueldo
-        dinero = dinero + sueldo
-        return sueldo
-    }
+  method gastar(cantidad) {
+    saldo -= cantidad
+  }
 
-    method totalCobrado() {
-        return totalCobrado
-    }
+  method deuda() {
+    if (saldo < 0) {return -saldo}
+    else {return 0}  
+  }
 
-    method gastar(cantidad) {
-            dinero = dinero - cantidad
-    }
-
-    method deuda() {
-        if (dinero < 0) {
-            return -dinero
-        } else {
-            return 0
-        }
-    }
-
-    method dinero() {
-        if (dinero < 0) {
-            return 0
-        } else {
-            return dinero
-        }
-    }
+  method dinero() {
+    if (saldo >= 0) {return saldo}
+    else {return 0}
+  }
 }
 
 object baigorria {
-    var valorEmpanada = 15
-    var cantidadDeEmpanasVendidas = 0
-    var totalCobrado = 0
+  var cantidadEmpanadasVendidas = 0
+  var property montoPorEmpanada = 15
+  var acumulador = 0
 
-    method vender(_cantidad) {
-        cantidadDeEmpanasVendidas = cantidadDeEmpanasVendidas + _cantidad
-    }
+  method totalCobrado() {return acumulador}
 
-    method sueldo() {
-        totalCobrado = totalCobrado + cantidadDeEmpanasVendidas * valorEmpanada
-        return cantidadDeEmpanasVendidas * valorEmpanada
-    }
+  method venderEmpanadas(cantidad) {
+    cantidadEmpanadasVendidas += cantidad
+  }
 
-    method totalCobrado() {
-        return totalCobrado
-    }
+  method pasarMes() {
+    acumulador = 0
+    cantidadEmpanadasVendidas = 0
+  }
+
+  method sueldo() = cantidadEmpanadasVendidas * montoPorEmpanada
+  method cobrarSueldo() {
+    acumulador += self.sueldo()
+    cantidadEmpanadasVendidas = 0
+  }
 }
 
 
