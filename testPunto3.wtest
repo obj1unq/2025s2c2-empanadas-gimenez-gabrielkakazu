@@ -14,7 +14,7 @@ test "punto1: Finanzas de  galvan" {
    assert.equals(12000, galvan.deuda()) 	
    assert.equals(0, galvan.dinero()) 	
 
-   gimenez.pagarSueldo(galvan)   
+   gimenez.pagarA(galvan)   
    assert.equals(0, galvan.deuda()) 	
    assert.equals(3000, galvan.dinero()) 	
 
@@ -22,7 +22,19 @@ test "punto1: Finanzas de  galvan" {
    assert.equals(22000, galvan.deuda()) 	
    assert.equals(0, galvan.dinero()) 	
 
-   gimenez.pagarSueldo(galvan)   
+   gimenez.pagarA(galvan)   
    assert.equals(7000, galvan.deuda()) 	
    assert.equals(0, galvan.dinero()) 	
 }
+
+  test "validacion de fondos insuficientes de gimenez" {
+  gimenez.dinero(100)
+  assert.that(gimenez.dinero() < galvan.sueldo())
+  assert.throwsException({ gimenez.pagarA(galvan) })  
+
+  gimenez.dinero(15000)
+  assert.that(gimenez.dinero() >= galvan.sueldo())
+  gimenez.pagarA(galvan)
+  assert.equals(0, gimenez.dinero())
+  assert.throwsException({ gimenez.pagarA(galvan) })  
+  }
